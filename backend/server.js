@@ -4,35 +4,48 @@
 // listen to a port
 // to use process.env variable inport dotenv and call config on it.
 
-require('dotenv').config()
+// require('dotenv').config()
 
-const express = require('express')
-const mongoose = require('mongoose')
-const workoutRouts = require('./routes/workouts')
+import dotenv from 'dotenv';
+import express, { json } from 'express'
+import mongoose from 'mongoose'
+// import workoutRouts from './routes/workouts'
+import coverImage from './routes/coverImage.js'
+
+dotenv.config()
 // express app
 const app = express()
+
+const { connect } = mongoose
 
 const port = process.env.PORT || 4000;
 
 //  middleware
-app.use(express.json())
+app.use(json())
 app.use((req, res, next) => {
     console.log(req.path, req.method)
     next()
 })
 
 // routes
-app.use('/api/workouts', workoutRouts)
+// app.use('/api/workouts', workoutRouts)
+app.use('/api/image', coverImage)
+
+// listening for requests
+app.listen(port, () => {
+    console.log(`listining to requests at port ${port}`)
+})
 
 // connect to DB
-mongoose.connect(process.env.MONGO_URI)
+connect(process.env.MONGO_URI)
     .then(() => {
+        console.log('Conected to DB')
         // listening for requests
-        app.listen(port, () => {
-            console.log(`connected to db & listining to requests at port ${port}`)
-        })
+        // app.listen(port, () => {
+        //     console.log(`connected to db & listining to requests at port ${port}`)
+        // })
     })
     .catch((err) => {
-        console.log(err)
+        console.log('DB connection failed', err)
     })
 

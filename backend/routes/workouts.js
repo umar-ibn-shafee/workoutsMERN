@@ -2,15 +2,11 @@
 // Then use all methods for this route
 // use rote handler functions from controler
 
-const express = require("express");
-const router = express.Router();
-const { 
-    postWorkout,
-    getWorkouts,
-    getOneWorkout,
-    updateWorkout,
-    deleteWorkout
-} = require("../controllers/workoutControllers")
+import { Router } from "express";
+import { postWorkout, getWorkouts, getOneWorkout, updateWorkout, deleteWorkout } from "../controllers/workoutControllers";
+
+
+const router = Router();
 
 // get all workouts
 router.get('/', getWorkouts)
@@ -27,4 +23,4 @@ router.patch('/:id', updateWorkout)
 // Delete a workout
 router.delete('/:id', deleteWorkout)
 
-module.exports = router
+export default router

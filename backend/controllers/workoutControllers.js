@@ -3,8 +3,8 @@
 // each function at the end sends a response either 400 or 200 depending on the scenario.
 // routes involving id's check id validity to avoide mongoose invalid ID errors ie "Internal Server Error" by "mongoose.Types.ObjectId.isValid(id)"
 
-const Workout = require('../models/workoutModel')
-const mongoose = require('mongoose')
+import Workout from '../models/workoutModel'
+import { Types } from 'mongoose'
 
 // get all workouts
 const getWorkouts = async (req, res) => {
@@ -15,7 +15,7 @@ const getWorkouts = async (req, res) => {
 // get one specific workout
 const getOneWorkout = async (req, res) => {
     const { id } = req.params
-    if(!mongoose.Types.ObjectId.isValid(id)) {
+    if(!Types.ObjectId.isValid(id)) {
         return res400("No such workout", res)
     }
     const workout = await Workout.findById(id)
@@ -31,7 +31,7 @@ const getOneWorkout = async (req, res) => {
 // update a workout
 const updateWorkout = async (req, res) => {
     const { id } = req.params
-    if(!mongoose.Types.ObjectId.isValid(id)) {
+    if(!Types.ObjectId.isValid(id)) {
         return res400("No such workout to update", res)
     }
     const workout = await Workout.findOneAndUpdate({_id: id}, {...req.body})
@@ -53,7 +53,7 @@ const postWorkout = async (req, res) => {
 // delete a workout
 const deleteWorkout = async (req, res) => {
     const { id } = req.params
-    if(!mongoose.Types.ObjectId.isValid(id)) {
+    if(!Types.ObjectId.isValid(id)) {
         return res400("No such workout to delete", res)
     }
     const workout = await Workout.findOneAndDelete({_id: id})
@@ -74,7 +74,7 @@ const sendResponse = (res, data, errMsg) => {
 }
 
 
-module.exports = {
+export default {
     postWorkout,
     getWorkouts,
     getOneWorkout,
